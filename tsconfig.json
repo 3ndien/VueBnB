@@ -3,7 +3,7 @@
     "target": "es2016",
     "lib": ["es6"],
     "module": "commonjs",
-    "rootDir": "src",
+    "rootDirs": ["src", "config"],
     "resolveJsonModule": true,
     "allowJs": true,
     "outDir": "build",
@@ -11,6 +11,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitAny": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "sourceMap": true
   }
 }
