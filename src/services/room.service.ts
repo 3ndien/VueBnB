@@ -1,4 +1,4 @@
-import RoomModel, { IRoom } from '../models/room.model';
+import RoomModel from '../models/room.model';
 import { CreateRoomInput } from '../schemas/room.schema';
 
 export async function CreateRoom(input: CreateRoomInput['body']) {

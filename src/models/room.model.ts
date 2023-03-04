@@ -13,7 +13,9 @@ export interface IFacility extends Document {
 export interface IBooking extends Document {
   startDate: string;
   endDate: string;
-  isBooked: boolean;
+  days: number;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface IRoom extends Document {
@@ -22,6 +24,8 @@ export interface IRoom extends Document {
   facilities: Array<IFacility>;
   description: string;
   booking: Array<IBooking>;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 type RoomDocumentsBeds = {
@@ -44,53 +48,63 @@ type RoomModelType = Model<
 
 const RoomModel = model<IRoom, RoomModelType>(
   'Rooms',
-  new Schema<IRoom, RoomModelType>({
-    roomType: {
-      type: String,
-      enum: ['Hotel', 'House', 'Bungalow'],
-      required: true
+  new Schema<IRoom, RoomModelType>(
+    {
+      roomType: {
+        type: String,
+        enum: ['Hotel', 'House', 'Bungalow'],
+        required: true
+      },
+      beds: [
+        new Schema<IBed>({
+          bedType: {
+            type: String,
+            enum: ['Single', 'Double', 'Two Stages'],
+            required: true
+          },
+          count: {
+            type: Number,
+            min: 1,
+            required: [true, 'Must have at least one bed']
+          }
+        })
+      ],
+      facilities: [
+        new Schema<IFacility>({
+          label: {
+            type: String,
+            required: [true, 'Facility type name is required']
+          },
+          iconUrl: String
+        })
+      ],
+      description: String,
+      booking: [
+        new Schema<IBooking>(
+          {
+            startDate: {
+              type: String,
+              required: true
+            },
+            endDate: {
+              type: String,
+              required: true
+            },
+            days: {
+              type: Number,
+              required: [true, 'Number of days for booking is required']
+            }
+          },
+          {
+            timestamps: true
+          }
+        )
+      ]
     },
-    beds: [
-      new Schema<IBed>({
-        bedType: {
-          type: String,
-          enum: ['Single', 'Double', 'Two Stages'],
-          required: true
-        },
-        count: {
-          type: Number,
-          min: 1,
-          required: [true, 'Must have at least one bed']
-        }
-      })
-    ],
-    facilities: [
-      new Schema<IFacility>({
-        label: {
-          type: String,
-          required: [true, 'Facility type name is required']
-        },
-        iconUrl: String
-      })
-    ],
-    description: String,
-    booking: [
-      new Schema<IBooking>({
-        startDate: {
-          type: String,
-          required: true
-        },
-        endDate: {
-          type: String,
-          required: true
-        },
-        isBooked: {
-          type: Boolean,
-          default: false
-        }
-      })
-    ]
-  })
+    {
+      timestamps: true
+    }
+  )
 );
 
 export default RoomModel;

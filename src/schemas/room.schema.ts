@@ -24,7 +24,9 @@ const createBookingSchema = z.object({
   endDate: z.string({
     required_error: 'End date is required'
   }),
-  isBooked: z.boolean().optional()
+  days: z.number({
+    required_error: 'Days Number for booking is required'
+  })
 });
 
 export const createRoomSchema = z.object({
